@@ -16,6 +16,7 @@ A multi-agent AI system powered by [CrewAI](https://crewai.com) that researches 
 - Python >= 3.10, < 3.14
 - [uv](https://docs.astral.sh/uv/) package manager
 - OpenAI API key
+- (Optional) Ants Platform SDK for observability
 
 ## Setup
 
@@ -49,10 +50,81 @@ OPENAI_MODEL_NAME=gpt-4o-mini
 
 Get your OpenAI API key from [platform.openai.com/api-keys](https://platform.openai.com/api-keys).
 
+### 5. Ants Platform SDK Setup (Optional — for observability)
+
+This crew integrates with [Ants Platform](https://cloud.ants-platform.com) to track LLM calls, agent steps, tool usage, and costs.
+
+#### Using the published SDK
+
+```bash
+pip install ants-platform[crewai]
+```
+
+#### Using the local SDK (for development/testing)
+
+If you have the SDK source locally, the `pyproject.toml` already points to it:
+
+```toml
+"ants-platform[crewai] @ file:///C:/Users/Abcom/Desktop/Ants-platform/ants-platform-python"
+```
+
+To install or update after SDK changes:
+
+```bash
+uv sync --reinstall-package ants-platform
+```
+
+#### Add Ants Platform keys to `.env`
+
+```env
+ANTS_PLATFORM_PUBLIC_KEY=pk-ap-your-public-key
+ANTS_PLATFORM_SECRET_KEY=sk-ap-your-secret-key
+ANTS_PLATFORM_HOST=http://localhost:3000
+```
+
+For production, change `ANTS_PLATFORM_HOST` to `https://cloud.ants-platform.com`.
+
+#### How it works
+
+The SDK is initialized in `main.py` with just 3 lines:
+
+```python
+from ants_platform import AntsPlatform
+from ants_platform.crewai import EventListener
+
+ants_platform = AntsPlatform(timeout=30)
+listener = EventListener(
+    agent_name="research_and_blog_crew",
+    agent_display_name="Research & Blog Crew v1.0",
+)
+```
+
+This auto-captures all crew executions, agent steps, LLM calls (model, tokens, cost), and tool usage into Ants Platform traces.
+
+Always call `ants_platform.flush()` at the end to ensure all spans are exported.
+
+#### Local SDK development workflow
+
+```bash
+# 1. Make changes to the SDK source
+# 2. Reinstall the updated SDK in the crew project
+cd C:/Users/Abcom/Desktop/CrewAI/research_and_blog_crew
+uv sync --reinstall-package ants-platform
+
+# 3. Run the crew to test
+uv run run_crew
+```
+
 ## Running the Crew
 
 ```bash
 crewai run
+```
+
+Or with `uv` directly (recommended when using Ants Platform):
+
+```bash
+uv run run_crew
 ```
 
 **Note (Windows):** If you see emoji encoding errors, run with:
