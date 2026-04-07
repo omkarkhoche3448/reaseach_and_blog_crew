@@ -126,8 +126,8 @@ wheels = [
 
 [[package]]
 name = "ants-platform"
-version = "3.4.0"
-source = { directory = "C:/Users/Abcom/Desktop/Ants-platform/ants-platform-python" }
+version = "3.5.0"
+source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "backoff" },
     { name = "httpx" },
@@ -139,28 +139,15 @@ dependencies = [
     { name = "requests" },
     { name = "wrapt" },
 ]
+sdist = { url = "https://files.pythonhosted.org/packages/88/ab/d01db832cb8def91859abafce536b2c4f896889188fe81c14c4ba59329ed/ants_platform-3.5.0.tar.gz", hash = "sha256:f9743892af8aba4025f86bb8e036a6ef8e9bdda66d2b9ee6bd4a51f5ff2d99c5", size = 178766, upload-time = "2026-04-07T06:14:32.575Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/09/b3/ba07d5c1d2d5a7dce893ab96c71cfe66f15869b885523e7e683bd69e7ab8/ants_platform-3.5.0-py3-none-any.whl", hash = "sha256:bf417f5186e2871fa6da304f519889f6ee02669446e8c1598fe0974e460056dc", size = 358182, upload-time = "2026-04-07T06:14:30.621Z" },
+]
 
 [package.optional-dependencies]
 crewai = [
     { name = "crewai" },
 ]
-
-[package.metadata]
-requires-dist = [
-    { name = "backoff", specifier = ">=1.10.0" },
-    { name = "crewai", marker = "python_full_version >= '3.10' and python_full_version < '3.14' and extra == 'crewai'", specifier = ">=0.80.0" },
-    { name = "httpx", specifier = ">=0.15.4,<1.0" },
-    { name = "langchain", marker = "extra == 'langchain'", specifier = ">=0.0.309" },
-    { name = "openai", marker = "extra == 'openai'", specifier = ">=0.27.8" },
-    { name = "opentelemetry-api", specifier = ">=1.33.1,<2.0.0" },
-    { name = "opentelemetry-exporter-otlp-proto-http", specifier = ">=1.33.1,<2.0.0" },
-    { name = "opentelemetry-sdk", specifier = ">=1.33.1,<2.0.0" },
-    { name = "packaging", specifier = ">=23.2,<26.0" },
-    { name = "pydantic", specifier = ">=1.10.7,<3.0" },
-    { name = "requests", specifier = ">=2,<3" },
-    { name = "wrapt", specifier = ">=1.14,<2.0" },
-]
-provides-extras = ["crewai", "langchain", "openai"]
 
 [[package]]
 name = "anyio"
@@ -2922,7 +2909,7 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [
-    { name = "ants-platform", extras = ["crewai"], directory = "C:/Users/Abcom/Desktop/Ants-platform/ants-platform-python" },
+    { name = "ants-platform", extras = ["crewai"], specifier = ">=3.5.0" },
     { name = "crewai", extras = ["tools"], specifier = "==1.3.0" },
 ]
 
