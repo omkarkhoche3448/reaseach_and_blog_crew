@@ -11,10 +11,10 @@ from ants_platform.crewai import EventListener
 # Load .env for local runs; on platform these are injected as system env vars
 load_dotenv()
 
-# TEMP: hardcoded keys for testing — revert to env vars after confirming traces work
+# TEMP: hardcoded keys for testing — rotate and revert to env vars after confirming traces work
 _ANTS_HOST = "https://app.agenticants.ai"
-_ANTS_PUBLIC_KEY = os.environ.get("ANTS_PLATFORM_PUBLIC_KEY")
-_ANTS_SECRET_KEY = os.environ.get("ANTS_PLATFORM_SECRET_KEY")
+_ANTS_PUBLIC_KEY = "pk-ap-c3a5359d-7025-4352-84ab-2ab5d8097001"
+_ANTS_SECRET_KEY = "sk-ap-298f1932-c266-4eda-b77e-7e1916de40cb"
 
 # Initialize Ants Platform observability at module load time
 # so it works both locally and on CrewAI platform
