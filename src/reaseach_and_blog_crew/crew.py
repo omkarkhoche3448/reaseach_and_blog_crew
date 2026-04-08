@@ -11,23 +11,21 @@ from ants_platform.crewai import EventListener
 # Load .env for local runs; on platform these are injected as system env vars
 load_dotenv()
 
-# Debug: log what env vars are actually available at runtime
-_public_key_raw = os.environ.get("ANTS_PLATFORM_PUBLIC_KEY")
-_secret_key_raw = os.environ.get("ANTS_PLATFORM_SECRET_KEY")
-_host_raw = os.environ.get("ANTS_PLATFORM_HOST")
-print(f"[ANTS DEBUG] PUBLIC_KEY={'SET('+_public_key_raw[:12]+'...)' if _public_key_raw else 'NOT SET'}")
-print(f"[ANTS DEBUG] SECRET_KEY={'SET' if _secret_key_raw else 'NOT SET'}")
-print(f"[ANTS DEBUG] HOST={_host_raw or 'NOT SET (will use default)'}")
+# TEMP: hardcoded keys for testing — revert to env vars after confirming traces work
+_ANTS_HOST = "https://app.agenticants.ai"
+_ANTS_PUBLIC_KEY = os.environ.get("ANTS_PLATFORM_PUBLIC_KEY")
+_ANTS_SECRET_KEY = os.environ.get("ANTS_PLATFORM_SECRET_KEY")
 
 # Initialize Ants Platform observability at module load time
 # so it works both locally and on CrewAI platform
 _ants_platform = AntsPlatform(
-    public_key=os.environ.get("ANTS_PLATFORM_PUBLIC_KEY"),
-    secret_key=os.environ.get("ANTS_PLATFORM_SECRET_KEY"),
-    host=os.environ.get("ANTS_PLATFORM_HOST", "https://app.agenticants.ai"),
+    public_key=_ANTS_PUBLIC_KEY,
+    secret_key=_ANTS_SECRET_KEY,
+    host=_ANTS_HOST,
     timeout=30,
 )
 _listener = EventListener(
+    public_key=_ANTS_PUBLIC_KEY,
     agent_name="research_and_blog_crew",
     agent_display_name="Research & Blog Crew v1.0",
 )
