@@ -1,6 +1,6 @@
+import os
 from ants_platform import AntsPlatform
 from ants_platform.crewai import EventListener
-
 from reaseach_and_blog_crew.crew import ResearchAndBlogCrew
 
 
@@ -8,7 +8,6 @@ def run():
     """
     Run the crew.
     """
-    import os
     public_key = os.environ.get("ANTS_PLATFORM_PUBLIC_KEY")
     secret_key = os.environ.get("ANTS_PLATFORM_SECRET_KEY")
     host = os.environ.get("ANTS_PLATFORM_HOST", "https://app.agenticants.ai")
@@ -26,7 +25,7 @@ def run():
     )
 
     inputs = {
-        'topic': 'The impact of artificial intelligence on the job market'
+        "topic": "The impact of artificial intelligence on the job market"
     }
 
     try:
@@ -35,5 +34,3 @@ def run():
         raise Exception(f"An error occurred while running the crew: {e}")
     finally:
         ants_platform.flush()
-
-
