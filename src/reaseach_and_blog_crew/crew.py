@@ -2,7 +2,16 @@ from crewai import Agent, Crew, Process, Task
 from crewai.project import CrewBase, agent, crew, task
 from crewai.agents.agent_builder.base_agent import BaseAgent
 from typing import List
+from ants_platform import AntsPlatform
+from ants_platform.crewai import EventListener
 
+# Initialize Ants Platform observability at module load time
+# so it works both locally and on CrewAI platform
+_ants_platform = AntsPlatform(timeout=30)
+_listener = EventListener(
+    agent_name="research_and_blog_crew",
+    agent_display_name="Research & Blog Crew v1.0",
+)
 
 # define the class for our crew
 @CrewBase
