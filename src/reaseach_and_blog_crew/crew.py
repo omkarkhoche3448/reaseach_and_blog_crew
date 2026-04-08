@@ -11,6 +11,14 @@ from ants_platform.crewai import EventListener
 # Load .env for local runs; on platform these are injected as system env vars
 load_dotenv()
 
+# Debug: log what env vars are actually available at runtime
+_public_key_raw = os.environ.get("ANTS_PLATFORM_PUBLIC_KEY")
+_secret_key_raw = os.environ.get("ANTS_PLATFORM_SECRET_KEY")
+_host_raw = os.environ.get("ANTS_PLATFORM_HOST")
+print(f"[ANTS DEBUG] PUBLIC_KEY={'SET('+_public_key_raw[:12]+'...)' if _public_key_raw else 'NOT SET'}")
+print(f"[ANTS DEBUG] SECRET_KEY={'SET' if _secret_key_raw else 'NOT SET'}")
+print(f"[ANTS DEBUG] HOST={_host_raw or 'NOT SET (will use default)'}")
+
 # Initialize Ants Platform observability at module load time
 # so it works both locally and on CrewAI platform
 _ants_platform = AntsPlatform(
