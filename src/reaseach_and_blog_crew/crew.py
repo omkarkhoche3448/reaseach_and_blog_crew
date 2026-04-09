@@ -16,9 +16,10 @@ _logger = logging.getLogger("ants_crew_init")
 # without going through main.py, so we need init here too.
 _pk = os.environ.get("ANTS_PLATFORM_PUBLIC_KEY")
 _sk = os.environ.get("ANTS_PLATFORM_SECRET_KEY")
-_host = os.environ.get("ANTS_PLATFORM_HOST", "https://app.agenticants.ai")
+# Host is hardcoded — CrewAI platform may override ANTS_PLATFORM_HOST env var
+_host = "https://app.agenticants.ai"
 
-_logger.warning("ANTS_CREW_INIT PK=%s SK=%s HOST=%s", bool(_pk), bool(_sk), _host)
+_logger.warning("ANTS_CREW_INIT PK=%s SK=%s HOST_HARDCODED=%s ENV_HOST=%s", bool(_pk), bool(_sk), _host, os.environ.get("ANTS_PLATFORM_HOST", "NOT_SET"))
 
 _ants_client = AntsPlatform(public_key=_pk, secret_key=_sk, host=_host, timeout=30)
 _ants_listener = EventListener(
