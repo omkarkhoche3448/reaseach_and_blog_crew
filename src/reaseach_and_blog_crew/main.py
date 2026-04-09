@@ -1,4 +1,4 @@
-from reaseach_and_blog_crew.crew import ResearchAndBlogCrew, _ants_client
+from reaseach_and_blog_crew.crew import ResearchAndBlogCrew ##, _ants_client
 
 
 def run():
@@ -13,5 +13,5 @@ def run():
         ResearchAndBlogCrew().crew().kickoff(inputs=inputs)
     except Exception as e:
         raise Exception(f"An error occurred while running the crew: {e}")
-    finally:
-        _ants_client.flush()
+    ## finally:
+    ##     _ants_client.flush()
