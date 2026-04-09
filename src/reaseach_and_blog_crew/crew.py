@@ -11,16 +11,10 @@ from ants_platform.crewai import EventListener
 
 _logger = logging.getLogger("ants_crew_init")
 
-# Read standard env vars
-_pk = os.environ.get("ANTS_PLATFORM_PUBLIC_KEY")
-_sk = os.environ.get("ANTS_PLATFORM_SECRET_KEY")
+# TEMP: hardcode new keys to test if they work from CrewAI platform network
+_pk = "pk-ap-ee83027c-f011-448e-aa65-7bf5fe857ee7"
+_sk = "sk-ap-2c13e4d7-33b4-4157-8051-0b2424929910"
 _host = "https://app.agenticants.ai"
-
-# Remove from os.environ AFTER reading, so CrewAI platform's own tracing
-# system doesn't pick them up and create a conflicting client that sends
-# our keys to the wrong endpoint (causing 401 errors).
-for _key in ["ANTS_PLATFORM_PUBLIC_KEY", "ANTS_PLATFORM_SECRET_KEY", "ANTS_PLATFORM_HOST"]:
-    os.environ.pop(_key, None)
 
 _logger.warning("ANTS_INIT PK=%s SK=%s HOST=%s", bool(_pk), bool(_sk), _host)
 
