@@ -11,34 +11,28 @@ from ants_platform.crewai import EventListener
 
 _logger = logging.getLogger("ants_crew_init")
 
-# Initialize SDK at module level in crew.py as well.
-# On CrewAI platform, the Celery worker may import crew.py directly
-# without going through main.py, so we need init here too.
+# Read standard env vars
 _pk = os.environ.get("ANTS_PLATFORM_PUBLIC_KEY")
 _sk = os.environ.get("ANTS_PLATFORM_SECRET_KEY")
-# Host is hardcoded — CrewAI platform may override ANTS_PLATFORM_HOST env var
 _host = "https://app.agenticants.ai"
 
-_logger.warning("ANTS_CREW_INIT PK=%s SK=%s HOST_HARDCODED=%s ENV_HOST=%s", bool(_pk), bool(_sk), _host, os.environ.get("ANTS_PLATFORM_HOST", "NOT_SET"))
-_logger.warning("ANTS_CREW_INIT PK_VAL=%s SK_LEN=%s", _pk[:20] if _pk else "NONE", len(_sk) if _sk else 0)
+# Remove from os.environ AFTER reading, so CrewAI platform's own tracing
+# system doesn't pick them up and create a conflicting client that sends
+# our keys to the wrong endpoint (causing 401 errors).
+for _key in ["ANTS_PLATFORM_PUBLIC_KEY", "ANTS_PLATFORM_SECRET_KEY", "ANTS_PLATFORM_HOST"]:
+    os.environ.pop(_key, None)
+
+_logger.warning("ANTS_INIT PK=%s SK=%s HOST=%s", bool(_pk), bool(_sk), _host)
 
 _ants_client = AntsPlatform(public_key=_pk, secret_key=_sk, host=_host, timeout=30)
-
-# Debug: check what the SDK actually stored
-_logger.warning("ANTS_CLIENT_HOST=%s TRACING=%s", _ants_client._host, _ants_client._tracing_enabled if hasattr(_ants_client, '_tracing_enabled') else "?")
-
 _ants_listener = EventListener(
     public_key=_pk,
     agent_name="research_and_blog_crew",
     agent_display_name="Research & Blog Crew v1.0",
 )
-
-# Debug: check what host the listener's client is using
-_logger.warning("ANTS_LISTENER_HOST=%s", _ants_listener.client._host if hasattr(_ants_listener.client, '_host') else "?")
-
 atexit.register(_ants_client.flush)
 
-_logger.warning("ANTS_CREW_INIT_DONE")
+_logger.warning("ANTS_INIT_DONE")
 
 
 # define the class for our crew
@@ -48,11 +42,9 @@ class ResearchAndBlogCrew():
     agents: list[BaseAgent]
     tasks: list[Task]
 
-    # define the paths of config files
     agents_config = "config/agents.yaml"
     tasks_config = "config/tasks.yaml"
 
-    # ============= Agents ====================
     @agent
     def report_generator(self) -> Agent:
         return Agent(
@@ -65,8 +57,6 @@ class ResearchAndBlogCrew():
             config=self.agents_config["blog_writer"]
         )
 
-    # ============== Tasks ===========================
-    # order of task definition matters
     @task
     def report_task(self) -> Task:
         return Task(
@@ -79,8 +69,6 @@ class ResearchAndBlogCrew():
             config=self.tasks_config["blog_writing_task"],
             output_file="blogs/blog.md"
         )
-
-    # ================ Crew ===============================
 
     @crew
     def crew(self) -> Crew:
