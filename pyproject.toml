@@ -6,10 +6,7 @@ authors = [{ name = "Your Name", email = "you@example.com" }]
 requires-python = ">=3.10,<3.14"
 dependencies = [
     "crewai[tools]==1.3.0",
-    ## "ants-platform[crewai]>=3.5.1",  # commented out for OTEL collector test
-    "opentelemetry-sdk>=1.27.0",
-    "opentelemetry-exporter-otlp>=1.27.0",
-    "opentelemetry-api>=1.27.0",
+    "ants-platform[crewai]>=3.5.2",
 ]
 
 [project.scripts]

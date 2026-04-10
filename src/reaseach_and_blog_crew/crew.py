@@ -1,32 +1,36 @@
-## import os
-## import atexit
+import os
+import atexit
 import logging
 
 from crewai import Agent, Crew, Process, Task
 from crewai.project import CrewBase, agent, crew, task
 from crewai.agents.agent_builder.base_agent import BaseAgent
 from typing import List
-## from ants_platform import AntsPlatform
-## from ants_platform.crewai import EventListener
+from ants_platform import AntsPlatform
+from ants_platform.crewai import EventListener
 
 _logger = logging.getLogger("ants_crew_init")
 
-## # TEMP: hardcode new keys to test if they work from CrewAI platform network
-## _pk = "pk-ap-ee83027c-f011-448e-aa65-7bf5fe857ee7"
-## _sk = "sk-ap-2c13e4d7-33b4-4157-8051-0b2424929910"
-## _host = "https://app.agenticants.ai"
-##
-## _logger.warning("ANTS_INIT PK=%s SK=%s HOST=%s", bool(_pk), bool(_sk), _host)
-##
-## _ants_client = AntsPlatform(public_key=_pk, secret_key=_sk, host=_host, timeout=30)
-## _ants_listener = EventListener(
-##     public_key=_pk,
-##     agent_name="research_and_blog_crew",
-##     agent_display_name="Research & Blog Crew v1.0",
-## )
-## atexit.register(_ants_client.flush)
-##
-## _logger.warning("ANTS_INIT_DONE")
+# TEMP: hardcode new keys to test if they work from CrewAI platform network
+_pk = "pk-ap-ee83027c-f011-448e-aa65-7bf5fe857ee7"
+_sk = "sk-ap-2c13e4d7-33b4-4157-8051-0b2424929910"
+_host = "https://app.agenticants.ai"
+
+# _pk = "pk-ap-12a80feb-7740-43e1-a252-7384f299396b"
+# _sk = "sk-ap-092bbf57-17a1-455a-a3c2-61b83ae12bba"
+# _host = "http://localhost:3000"
+
+_logger.warning("ANTS_INIT PK=%s SK=%s HOST=%s", bool(_pk), bool(_sk), _host)
+
+_ants_client = AntsPlatform(public_key=_pk, secret_key=_sk, host=_host, timeout=30)
+_ants_listener = EventListener(
+    public_key=_pk,
+    agent_name="research_and_blog_crew",
+    agent_display_name="Research & Blog Crew v1.0",
+)
+atexit.register(_ants_client.flush)
+
+_logger.warning("ANTS_INIT_DONE")
 
 
 # define the class for our crew
